@@ -16,6 +16,8 @@
 
 using namespace std;
 
+// Because we will be including the mainwindow.h file, need to state this to prevent
+// the circular dependency issue
 class MainWindow;
 
 class Plugin : public IVdjPlugin8 {
@@ -28,10 +30,14 @@ class Plugin : public IVdjPlugin8 {
         HRESULT VDJ_API OnGetParameterString(int id, char *outParam, int outParamSize);
         ULONG VDJ_API Release();
     private:
+    
+        // This will be used to launch the plugin's GUI in a separate thread so VDJ can
+        // still launch and be used
         static void *startGuiThread(void*);
 
 };
 
+// This will be used when launching another thread for the plugin's GUI
 struct InputArgs {
     int argc;
     char **argv;
